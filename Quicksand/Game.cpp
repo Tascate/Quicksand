@@ -268,9 +268,6 @@ void Game::gameLoop() {
 			case sf::Event::KeyPressed:
 				checkForKeyInput(evnt.key.code); //get actions, inputs are only Read Once
 				break;
-			case sf::Event::KeyReleased:
-				checkForReleaseKeyInput(evnt.key.code); //Used for DAS
-				break;
 			case sf::Event::JoystickButtonPressed:
 				currentJoystickID = evnt.joystickButton.joystickId; //update Joystick ID
 				//get button actions, Joystick inputs are only Read Once
@@ -292,12 +289,14 @@ void Game::gameLoop() {
 				delayingAutoShift = false;
 				shiftTimer = 0.0f;
 			}
-		} else if (isAutoShifting) { //Finished DAS, begin Auto Shifting, movement input is held down
+		} 
+		else if (isAutoShifting) { //Finished DAS, begin Auto Shifting, movement input is held down
 			shiftTimer += eTime;
 			if (shiftTimer >= DEFAULT_AS_TIMER) {
 				shiftTimer = 0.0f;
 				isAutoShifting = false;
-			} else {
+			} 
+			else {
 				dx = 0;
 			}
 		}
@@ -347,20 +346,11 @@ void Game::checkForKeyInput(sf::Keyboard::Key keyInputted) {
 	case sf::Keyboard::Left: //Shift Left
 		dx = -1;
 		delayingAutoShift = true;
+		shiftTimer = 0;
 		break;
 	case sf::Keyboard::Right: //Shift Right
 		dx = 1;
 		delayingAutoShift = true;
-		break;
-	}
-}
-
-void Game::checkForReleaseKeyInput(sf::Keyboard::Key keyReleased) {
-	switch (keyReleased)
-	{
-	case sf::Keyboard::Left:
-	case sf::Keyboard::Right:
-		delayingAutoShift = false;
 		shiftTimer = 0;
 		break;
 	}

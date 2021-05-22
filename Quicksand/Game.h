@@ -69,7 +69,6 @@ private:
 	void gameOverSequence(MapEx::GameOver &end);
 	void advanceGameState();
 	void checkForKeyInput(sf::Keyboard::Key);
-	void checkForReleaseKeyInput(sf::Keyboard::Key);
 	void checkForJoyButtonInput(unsigned int, unsigned int);
 	void checkForJoyAxisMove(unsigned int, sf::Joystick::Axis, float);
 	void checkForHeldInput();
