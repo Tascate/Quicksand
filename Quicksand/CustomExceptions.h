@@ -53,7 +53,7 @@ namespace MapEx {
     class GameOver {
     public:
         GameOver() {}
-        void display(RenderWindow& window, GameGraphics& drawer, const ScoreBoard& board) {
+        void display(sf::RenderWindow& window, GameGraphics& drawer, const ScoreBoard& board) {
             window.clear();
             drawer.drawGameOver(board);
             window.display();

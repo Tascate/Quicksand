@@ -1,7 +1,7 @@
 #include "GameGraphics.h"
 #include "GameMap.h"
 
-GameGraphics::GameGraphics(RenderWindow* wP, const GameMap* mP, float off):
+GameGraphics::GameGraphics(sf::RenderWindow* wP, const GameMap* mP, float off):
 windowPtr(wP), mapPtr(mP), gameH(static_cast<float>(wP->getSize().y)), gameW(static_cast<float>(wP->getSize().x)), offset(off) {
 	// load in neccessary textures
     sand.loadFromFile("Texture/sand.png");
@@ -13,10 +13,10 @@ windowPtr(wP), mapPtr(mP), gameH(static_cast<float>(wP->getSize().y)), gameW(sta
 }
 
 void GameGraphics::drawMap() {
-	RectangleShape back(Vector2f(gameW, gameH));
+	sf::RectangleShape back(sf::Vector2f(gameW, gameH));
 	back.setTexture(&background);
 	windowPtr->draw(back);
-	sf::RectangleShape goldSquare(Vector2f(mapPtr->squares_size, mapPtr->squares_size));
+	sf::RectangleShape goldSquare(sf::Vector2f(mapPtr->squares_size, mapPtr->squares_size));
 	goldSquare.setTexture(&gold);
 	goldSquare.setFillColor(sf::Color::Yellow);
 	for (int k = 0; k < mapPtr->getMapWidth(); k++) {
@@ -44,15 +44,15 @@ void GameGraphics::drawMap() {
 					break;
 				case 1:
 					temp.setTexture(&sand);
-					temp.setFillColor(Color(242, 106, 51));
+					temp.setFillColor(sf::Color(242, 106, 51));
 					break;
 				case 2:
 					temp.setTexture(&sand);
-					temp.setFillColor(Color(163, 127, 42));
+					temp.setFillColor(sf::Color(163, 127, 42));
 					break;
 				case 3:
 					temp.setTexture(&sand);
-					temp.setFillColor(Color(108, 129, 161));
+					temp.setFillColor(sf::Color(108, 129, 161));
 					break;
 				case 6: // bomb texture exploding
 					temp.setTexture(&boom);
@@ -71,8 +71,8 @@ void GameGraphics::drawMap() {
 }
 
 void GameGraphics::drawPauseMenu() {
-    Text pause("PAUSED", gameFont, 30);
-	pause.setFillColor(Color::Red);
+	sf::Text pause("PAUSED", gameFont, 30);
+	pause.setFillColor(sf::Color::Red);
 	pause.setPosition(0,gameH - 40);
     windowPtr->draw(pause);
 }
@@ -84,8 +84,8 @@ void GameGraphics::drawMenu() {
 	windowPtr->draw(img);
 
 	// game name
-	Text text("QuickSand!", gameFont, 50);
-	Text text2("Press Space to Begin", gameFont, 25);
+	sf::Text text("QuickSand!", gameFont, 50);
+	sf::Text text2("Press Space to Begin", gameFont, 25);
 	text2.setPosition(5, 650);
 	text.setFillColor(sf::Color::Yellow);
 	text2.setFillColor(sf::Color::Yellow);
@@ -95,7 +95,7 @@ void GameGraphics::drawMenu() {
 
 void GameGraphics::drawGameOver(const ScoreBoard& board, int displayNumber) {
 	// display game over message
-    Text gg("GAME OVER", gameFont, static_cast<unsigned>(mapPtr->squares_size));
+	sf::Text gg("GAME OVER", gameFont, static_cast<unsigned>(mapPtr->squares_size));
     gg.setFillColor(sf::Color::Yellow);
     gg.setStyle(sf::Text::Bold);
 	windowPtr->draw(gg);
@@ -103,7 +103,7 @@ void GameGraphics::drawGameOver(const ScoreBoard& board, int displayNumber) {
     const multimap<int, string> b = board.getBoard();
     auto it = b.crbegin();
     float height = (windowPtr->getSize().y - mapPtr->squares_size)/(displayNumber);
-    Text text;
+	sf::Text text;
     text.setFont(gameFont);
     text.setCharacterSize(20);
     string buffer;
@@ -118,7 +118,7 @@ void GameGraphics::drawGameOver(const ScoreBoard& board, int displayNumber) {
 }
 
 void GameGraphics::drawScore(int s) {
-    Text scoreText;
+	sf::Text scoreText;
     scoreText.setString(to_string(s));
 	scoreText.setFont(gameFont);
 	scoreText.setCharacterSize(static_cast<unsigned>(mapPtr->squares_size));
@@ -127,10 +127,10 @@ void GameGraphics::drawScore(int s) {
 }
 
 void GameGraphics::drawUserMenu() {
-	RectangleShape back(Vector2f(gameW, gameH));
+	sf::RectangleShape back(sf::Vector2f(gameW, gameH));
 	back.setTexture(&background);
 	windowPtr->draw(back);
-    Text instruc("Please Enter A UserName: ", gameFont, 20);
+	sf::Text instruc("Please Enter A UserName: ", gameFont, 20);
 	instruc.setPosition(0,40);
 	windowPtr->draw(instruc);
 }

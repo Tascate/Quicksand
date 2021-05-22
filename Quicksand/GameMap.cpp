@@ -185,7 +185,7 @@ int GameMap::update() {
 	return sum;
 }
 
-void GameMap::rotate(GameObject* obj) {
+void GameMap::rotate(GameObject* obj, bool rotateCW) {
 	// clear current obj
 	coords* coordP = obj->getCoords(0);
 	for (int i = 1; coordP != nullptr; i++) {
@@ -193,7 +193,10 @@ void GameMap::rotate(GameObject* obj) {
 		coordP = obj->getCoords(i);
 	}
 	// rotate
-	obj->rotateCW();
+	if (rotateCW)
+		obj->rotateCW();
+	else
+		obj->rotateCCW();
 	coordP = obj->getCoords(0);
 	// check if rotated obj is valid
 	for (int i = 1; coordP != nullptr; i++) {

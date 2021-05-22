@@ -35,7 +35,7 @@ public:
 	~GameMap();
 
 	GameObject* spawn();
-	void rotate(GameObject*);
+	void rotate(GameObject*, bool);
 	int updateObj(GameObject*, int, int, int&);
 
 	bool loadSaveFile(string);

@@ -5,24 +5,22 @@
 #include <cstdlib>
 #include <string>
 
-using namespace sf;
-
 class GameMap;
 
 class GameGraphics {
 private:
-	RenderWindow* windowPtr;
+	sf::RenderWindow* windowPtr;
 	const GameMap* mapPtr;
-	Font gameFont;
-    Texture sand, bomb, background, boom, startingScreen, gold;
+	sf::Font gameFont;
+    sf::Texture sand, bomb, background, boom, startingScreen, gold;
 	float gameH, gameW, offset;
 public:
-    GameGraphics(RenderWindow*, const GameMap*, float);
+    GameGraphics(sf::RenderWindow*, const GameMap*, float);
 	void drawMenu();
 	void drawUserMenu();
 	void drawPauseMenu();
     void drawMap();
 	void drawGameOver(const ScoreBoard&, int = 10);
 	void drawScore(int);
-	Font& getFont(){return gameFont;}
+	sf::Font& getFont(){return gameFont;}
 };
