@@ -3,9 +3,6 @@
 #include "GameObject.h"
 #include "LinkedList.h"
 #include "CustomExceptions.h"
-#include <cstdlib>
-
-using namespace std;
 
 class RandomBlock : public GameObject {
 protected:

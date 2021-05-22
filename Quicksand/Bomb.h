@@ -2,10 +2,6 @@
 
 #include "GameObject.h"
 #include "CustomExceptions.h"
-#include <iostream>
-#include <cstdlib>
-
-using namespace std;
 
 class Bomb : public GameObject {
 private:

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GameGraphics.h"
-#include <cstdlib>
 #include <iostream>
 
 namespace BlockEx {

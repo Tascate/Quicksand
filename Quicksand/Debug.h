@@ -2,8 +2,6 @@
 
 #include "GameMap.h"
 
-using namespace std;
-
 class Debug {
 private:
     GameMap* dMap;

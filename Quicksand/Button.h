@@ -1,8 +1,6 @@
 #pragma once
 
-#include <iostream>
 #include <SFML/Graphics.hpp>
-#include <string>
 
 // This class is created following turtorial:
 // https://www.youtube.com/watch?v=T31MoLJws4U

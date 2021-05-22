@@ -1,9 +1,5 @@
 #pragma once
 
-#include <cstdlib>
-
-using namespace std;
-
 class Square {
 private:
 	//Square holds coordinates relative to the map,

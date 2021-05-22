@@ -1,9 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include <sstream>
-
 
 enum Special_Key {
 	DELETE_KEY = 8,

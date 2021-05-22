@@ -2,8 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 #include "ScoreBoard.h"
-#include <cstdlib>
-#include <string>
 
 class GameMap;
 

@@ -2,9 +2,6 @@
 
 #include "GameObject.h"
 #include "CustomExceptions.h"
-#include <cstdlib>
-
-using namespace std;
 
 class TetrisBlock : public GameObject {
 public:
