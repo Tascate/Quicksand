@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game() : window(new RenderWindow(VideoMode(static_cast<unsigned>(windowWidth), static_cast<unsigned>(windowHeight))
+Game::Game() : window(new sf::RenderWindow(sf::VideoMode(static_cast<unsigned>(windowWidth), static_cast<unsigned>(windowHeight))
 	, "Tetris", sf::Style::Close)), drawer(window, &map, SQUARE_OFFSET), q("Quit", 15, sf::Color::Yellow, { 70, 50 }, sf::Color::Black),
 	c("Cancel", 15, sf::Color::White, { 70, 50 }, sf::Color::Black), r("Retry", 15, sf::Color::Yellow, { 70, 50 }, sf::Color::Black) {
 	srand(static_cast<unsigned>(time(nullptr)));
@@ -8,7 +8,7 @@ Game::Game() : window(new RenderWindow(VideoMode(static_cast<unsigned>(windowWid
 	gameState = GameState::Playing;
 }
 
-Game::Game(RenderWindow& w) :
+Game::Game(sf::RenderWindow& w) :
 	SQUARE_SIZE((w.getSize().y / MAP_HEIGHT < w.getSize().x / MAP_WIDTH) ?
 	(w.getSize().y * SQURE_TO_OFFSET_RATIO) / (MAP_HEIGHT * (SQURE_TO_OFFSET_RATIO + 1) + 1)
 		: (w.getSize().x * SQURE_TO_OFFSET_RATIO) / (MAP_WIDTH * (SQURE_TO_OFFSET_RATIO + 1) + 1))
@@ -30,8 +30,9 @@ void Game::playGame() {
 	mPlayer.playOne("Tetris.ogg");
 
 	//Set Window Settings
-	//Makes it so ket inputs are only processed once when held down
+	//Makes it so key inputs are only processed once when held down
 	window->setKeyRepeatEnabled(false);  //Certain inputs have special-case to check for held input
+	window->setJoystickThreshold(DEFAULT_DEADZONE);
 	window->setFramerateLimit(DEFAULT_FRAMERATE);
 
 	//Set Fonts for Text
@@ -46,7 +47,7 @@ void Game::playGame() {
 
 //Gameloop for continously running the game
 void Game::gameLoop() {
-	Event evnt;
+	sf::Event evnt;
 	switch (gameState) 	{
 	case GameState::InMenu: {
 		q.setPosition({ (windowWidth / 2) - 35, windowHeight - 55});
@@ -75,11 +76,11 @@ void Game::gameLoop() {
 				}
 				flag = true;
 			}
-			if (evnt.type == Event::KeyPressed && Keyboard::isKeyPressed(Keyboard::Space)) {
+			if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::Space) {
 				gameState = GameState::GetUser;
 				flag = true;
 			}
-			else if (evnt.type == Event::Closed)
+			else if (evnt.type == sf::Event::Closed)
 				window->close();
 		}
 		break;
@@ -87,7 +88,7 @@ void Game::gameLoop() {
 	case GameState::GetUser: {
 		TextBox textB(30, sf::Color::White, true);
 		textB.setFont(drawer.getFont());
-		textB.setPosition(Vector2f(0, windowHeight / 2));
+		textB.setPosition(sf::Vector2f(0, windowHeight / 2));
 		c.setPosition({ (windowWidth / 2) - 35, windowHeight - 55 });
 
 		// gets user input
@@ -114,16 +115,16 @@ void Game::gameLoop() {
 					}
 					flag = true;
 				}
-				if (evnt.type == Event::KeyPressed && 
-					(Keyboard::isKeyPressed(Keyboard::Space) || Keyboard::isKeyPressed(Keyboard::Enter))) {
+				if (evnt.type == sf::Event::KeyPressed &&
+					(evnt.key.code == sf::Keyboard::Space || evnt.key.code == sf::Keyboard::Enter)) {
 					flag = true;
 					gameState = GameState::Playing;
 					break;
 				}
-				else if (evnt.type == Event::TextEntered) {
+				else if (evnt.type == sf::Event::TextEntered) {
 					textB.typeOn(evnt);
 				}
-				else if (evnt.type == Event::Closed)
+				else if (evnt.type == sf::Event::Closed)
 					window->close();
 			}
 		}
@@ -134,7 +135,7 @@ void Game::gameLoop() {
 	}
 	case GameState::GameOver: {
 		while (window->pollEvent(evnt)) {
-			if (evnt.type == Event::Closed) {
+			if (evnt.type == sf::Event::Closed) {
 				window->close();
 				break;
 			}
@@ -188,20 +189,20 @@ void Game::gameLoop() {
 				}
 				flag = true;
 			} 
-			else if (evnt.type == Event::KeyPressed && Keyboard::isKeyPressed(Keyboard::Escape)) {
+			else if (evnt.type == sf::Event::KeyPressed && evnt.key.code == sf::Keyboard::Escape) {
 				mPlayer.continueMusic();
 				flag = true;
 				gameState = GameState::Playing;
 			} 
-			else if (evnt.type == Event::JoystickButtonPressed) {
+			else if (evnt.type == sf::Event::JoystickButtonPressed) {
 				currentJoystickID = evnt.joystickButton.joystickId;
-				if (Joystick::isButtonPressed(currentJoystickID, 7)) {
+				if (sf::Joystick::isButtonPressed(currentJoystickID, 7)) {
 					mPlayer.continueMusic();
 					flag = true;
 					gameState = GameState::Playing;
 				}
 			} 
-			else if (evnt.type == Event::Closed)
+			else if (evnt.type == sf::Event::Closed)
 				map.writeSaveFile(playerName, currObj);
 		}
 		break;
@@ -209,16 +210,17 @@ void Game::gameLoop() {
 	case GameState::Debug: 	{
 		Debug dMenu(&map, currObj);
 		int row, col;
-		Event evnt;
+		sf::Event evnt;
 		// debug mode is on
 		while (gameState == GameState::Debug) {
 			// look for user input
 			while (window->pollEvent(evnt)) {
-				if (evnt.type == Event::KeyPressed) {
-					if (Keyboard::isKeyPressed(Keyboard::Y)) {
+				if (evnt.type == sf::Event::KeyPressed) {
+					if (evnt.key.code == sf::Keyboard::Y) {
 						gameState = GameState::Playing;
 						break;
-					} else if (Keyboard::isKeyPressed(Keyboard::P)) {
+					} 
+					else if (evnt.key.code == sf::Keyboard::P) {
 						// get user Input
 						GameObject* newObj;
 						char input;
@@ -232,16 +234,17 @@ void Game::gameLoop() {
 							window->display();
 						}
 					}
-				} else if (evnt.type == Event::JoystickButtonPressed) {
+				} 
+				else if (evnt.type == sf::Event::JoystickButtonPressed) {
 					currentJoystickID = evnt.joystickButton.joystickId;
-					if (Joystick::isButtonPressed(currentJoystickID, 6)) {
+					if (sf::Joystick::isButtonPressed(currentJoystickID, 6)) {
 						gameState = GameState::Playing;
 						break;
 					}
 				}
 				// move to cursor if it is pressed
-				if (Mouse::isButtonPressed(sf::Mouse::Left)) {
-					Vector2i mousePos = Mouse::getPosition(*window);
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+					sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
 					row = mousePos.y / (static_cast<int>(map.getSquareSize()) + static_cast<int>(SQUARE_OFFSET));
 					col = mousePos.x / (static_cast<int>(map.getSquareSize()) + static_cast<int>(SQUARE_OFFSET));
 					dMenu.moveBlock(row, col);
@@ -258,25 +261,25 @@ void Game::gameLoop() {
 		dropTimer += eTime;
 		while (window->pollEvent(evnt)) {
 			switch (evnt.type) {
-			case Event::Closed:
+			case sf::Event::Closed:
 				window->close();
 				map.writeSaveFile(playerName, currObj); //save current state to file
 				break;
-			case Event::KeyPressed:
-				checkForKeyInput(); //get actions, inputs are only Read Once
+			case sf::Event::KeyPressed:
+				checkForKeyInput(evnt.key.code); //get actions, inputs are only Read Once
 				break;
-			case Event::KeyReleased:
-				checkForReleaseKeyInput(); //Used for DAS
+			case sf::Event::KeyReleased:
+				checkForReleaseKeyInput(evnt.key.code); //Used for DAS
 				break;
-			case Event::JoystickButtonPressed:
+			case sf::Event::JoystickButtonPressed:
 				currentJoystickID = evnt.joystickButton.joystickId; //update Joystick ID
-				checkForJoyInput(); //get button actions, Joystick inputs are only Read Once
+				//get button actions, Joystick inputs are only Read Once
+				checkForJoyButtonInput(evnt.joystickButton.joystickId, evnt.joystickButton.button); 
 				break;
-			case Event::JoystickMoved:
-				if (evnt.joystickMove.position > DEFAULT_DEADZONE || evnt.joystickMove.position < -DEFAULT_DEADZONE) {
-					currentJoystickID = evnt.joystickMove.joystickId;
-					checkForJoyMove(); //get axis actions, Joystick inputs are only Read Once
-				}
+			case sf::Event::JoystickMoved:
+				currentJoystickID = evnt.joystickMove.joystickId;
+				//get axis actions, Joystick inputs are only Read Once
+				checkForJoyAxisMove(currentJoystickID, evnt.joystickMove.axis, evnt.joystickMove.position); 
 				break;
 			default:
 				break;
@@ -313,103 +316,138 @@ void Game::gameLoop() {
 	}
 }
 
-void Game::checkForKeyInput() {
+void Game::checkForKeyInput(sf::Keyboard::Key keyInputted) {
 	//Keyboard Inputs inside this function are only read once when held down
-	if (Keyboard::isKeyPressed(Keyboard::Escape)) {// pausing
+	switch (keyInputted) 
+	{
+	case sf::Keyboard::Escape: //Pausing
 		gameState = GameState::Paused;
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Y)) { //begin debugging 
+		break;
+	case sf::Keyboard::Y: //Begins Debug Mode
 		gameState = GameState::Debug;
-	}
-	//Volume
-	if (Keyboard::isKeyPressed(Keyboard::PageUp)) {
+		break;
+	case sf::Keyboard::PageUp: //Volume Adjustment
 		mPlayer.adjVolume(5);
-	} else if (Keyboard::isKeyPressed(Keyboard::PageDown)) {
+		break;
+	case sf::Keyboard::PageDown:
 		mPlayer.adjVolume(-5);
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Space)) {
+		break;
+	case sf::Keyboard::Space: //Tetris Hard Drop
 		hardDropping = true;
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Up)) {
-		map.rotate(currObj);
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Left)) {
+		break;
+	case sf::Keyboard::Up: //Rotate Clockwise
+	case sf::Keyboard::X:
+		map.rotate(currObj, true);
+		break;
+	case sf::Keyboard::LControl: //Rotate CounterClockwise
+	case sf::Keyboard::RControl: 
+	case sf::Keyboard::Z:
+		map.rotate(currObj, false);
+		break;
+	case sf::Keyboard::Left: //Shift Left
 		dx = -1;
 		delayingAutoShift = true;
-	} else if (Keyboard::isKeyPressed(Keyboard::Right)) {
+		break;
+	case sf::Keyboard::Right: //Shift Right
 		dx = 1;
 		delayingAutoShift = true;
+		break;
 	}
 }
 
-void Game::checkForReleaseKeyInput() {
-	if (!Keyboard::isKeyPressed(Keyboard::Left)) {
+void Game::checkForReleaseKeyInput(sf::Keyboard::Key keyReleased) {
+	switch (keyReleased)
+	{
+	case sf::Keyboard::Left:
+	case sf::Keyboard::Right:
 		delayingAutoShift = false;
 		shiftTimer = 0;
-	} else if (!Keyboard::isKeyPressed(Keyboard::Right)) {
-		delayingAutoShift = false;
-		shiftTimer = 0;
+		break;
 	}
 }
 
-void Game::checkForJoyInput() {
+void Game::checkForJoyButtonInput(unsigned int joystickID, unsigned int button) {
 	//Joystick Inputs inside this function are only read once
-	if (Joystick::isButtonPressed(currentJoystickID, 7)) { //pausing, 7 = start button
-		gameState = GameState::Paused;
-	}
-	if (Joystick::isButtonPressed(currentJoystickID, 6)) {//pausing, 7 = start button
-		gameState = GameState::Debug;
-	}
-	if (Joystick::isButtonPressed(currentJoystickID, 0) || Joystick::isButtonPressed(currentJoystickID, 1)
-		|| Joystick::isButtonPressed(currentJoystickID, 2) || Joystick::isButtonPressed(currentJoystickID, 3)) {
-		//rotate, 0 = A button, 1 = B button, 2 = X button, 3 = Y Button, all face buttons
-		map.rotate(currObj);
+	if (currentJoystickID == joystickID)
+	{
+		switch (button)
+		{
+		case 7: //pausing, 7 = start button
+			gameState = GameState::Paused;
+			break;
+		case 6: //pausing, 6 = select button
+			gameState = GameState::Debug;
+			break;
+		case 1: //rotate CW, 1 = B button,  3 = Y Button
+		case 3:
+			map.rotate(currObj, true);
+			break;
+		case 0: //rotate CCW, 0 = A button, 2 = X button,
+		case 2:
+			map.rotate(currObj, false);
+			break;
+		}
 	}
 }
 
-void Game::checkForJoyMove() {
+void Game::checkForJoyAxisMove(unsigned int joystickID, sf::Joystick::Axis axis, float position) {
 	//Joystick Inputs inside this function are only read once
-	if (Joystick::getAxisPosition(currentJoystickID, Joystick::Axis::PovY) > DEFAULT_DEADZONE) { //d-pad up
-		hardDropping = true;
-	}
-	if (Joystick::getAxisPosition(currentJoystickID, Joystick::Axis::PovX) < -DEFAULT_DEADZONE) { //d-pad left
-		dx = -1;
-		delayingAutoShift = true;
-	} 
-	else if (Joystick::getAxisPosition(currentJoystickID, Joystick::Axis::PovX) > DEFAULT_DEADZONE) { //d-pad right
-		dx = 1;
-		delayingAutoShift = true;
-	} 
-	else if (Joystick::getAxisPosition(currentJoystickID, Joystick::Axis::PovX) >= -DEFAULT_DEADZONE
-		|| Joystick::getAxisPosition(currentJoystickID, Joystick::Axis::PovX) <= DEFAULT_DEADZONE) { //d-pad neutral position
-		delayingAutoShift = false;
-		shiftTimer = 0;
+	if (currentJoystickID == joystickID)
+	{
+		switch (axis)
+		{
+		case sf::Joystick::Axis::PovX:
+			if (position < -DEFAULT_DEADZONE) //d-pad left
+			{
+				dx = -1;
+				delayingAutoShift = true;
+			}
+			else if (position >= -DEFAULT_DEADZONE) //d-pad right
+			{
+				dx = 1;
+				delayingAutoShift = true;
+			}
+			else if (position >= -DEFAULT_DEADZONE|| position <= DEFAULT_DEADZONE) { //d-pad neutral position
+				delayingAutoShift = false;
+				shiftTimer = 0;
+			}
+			break;
+		case sf::Joystick::Axis::PovY:
+			if (position > DEFAULT_DEADZONE) //d-pad up
+				hardDropping = true;
+			break;
+		}
 	}
 }
 
 void Game::checkForHeldInput() {
 	//Held Down Inputs are continously read
-	//Block Movement
-	if (Keyboard::isKeyPressed(Keyboard::Down)) {
+	//Hard Drop
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 		isFastFalling = true;
 	}
-	if (!delayingAutoShift && Keyboard::isKeyPressed(Keyboard::Left)) {
+	//Block Movement
+	if (!delayingAutoShift && sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+		if (dx == 1)
+			shiftTimer = 0;
 		dx = -1;
 		isAutoShifting = true;
 	} 
-	else if (!delayingAutoShift && Keyboard::isKeyPressed(Keyboard::Right)) {
+	else if (!delayingAutoShift && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		if (dx == -1)
+			shiftTimer = 0;
 		dx = 1;
 		isAutoShifting = true;
 	}
-	if (Joystick::isConnected(currentJoystickID)) {
-		if (Joystick::getAxisPosition(currentJoystickID, Joystick::Axis::PovY) < -DEFAULT_DEADZONE) { //d-pad down
+	else if (sf::Joystick::isConnected(currentJoystickID)) { //Key Held Inputs Prioritized over Joystick Held Inputs
+		if (sf::Joystick::getAxisPosition(currentJoystickID, sf::Joystick::Axis::PovY) < -DEFAULT_DEADZONE) { //d-pad down
 			isFastFalling = true;
 		}
-		if (!delayingAutoShift && Joystick::getAxisPosition(currentJoystickID, Joystick::Axis::PovX) < -DEFAULT_DEADZONE) { //d-pad left
+		if (!delayingAutoShift && sf::Joystick::getAxisPosition(currentJoystickID, sf::Joystick::Axis::PovX) < -DEFAULT_DEADZONE) { //d-pad left
 			dx = -1;
 			isAutoShifting = true;
 		}
-		if (!delayingAutoShift && Joystick::getAxisPosition(currentJoystickID, Joystick::Axis::PovX) > DEFAULT_DEADZONE) { //d-pad right
+		else if (!delayingAutoShift && sf::Joystick::getAxisPosition(currentJoystickID, sf::Joystick::Axis::PovX) > DEFAULT_DEADZONE) { //d-pad right
 			dx = 1;
 			isAutoShifting = true;
 		}
@@ -433,7 +471,7 @@ void Game::advanceGameState() {
 			currObj = map.spawn();//throw exception if cant spawn
 		}
 		catch (MapEx::GameOver end) {
-			gameOver(end);
+			gameOverSequence(end);
 		}
 		//gravity
 	} 
@@ -449,13 +487,14 @@ void Game::advanceGameState() {
 			delete currObj;
 			try {
 				currObj = map.spawn();//throw exception if cant spawn
-			} catch (MapEx::GameOver end) {
-				gameOver(end);
+			} 
+			catch (MapEx::GameOver end) {
+				gameOverSequence(end);
 			}
 		}
 		dropTimer = 0;
 	}
-	//reset value
+	//reset values
 	dx = 0;
 	isFastFalling = false;
 	delay = DEFAULT_SPEED / static_cast<float>(score / 1000 + 1);
@@ -464,22 +503,26 @@ void Game::advanceGameState() {
 int Game::hardDrop() {
 	int lineMoved = 0;
 	int oldScore = score;
-	while (map.updateObj(currObj, +1, 0, score)) {
+	while (map.updateObj(currObj, +1, 0, score)) 
 		lineMoved++;
-	}
 	if (score != oldScore) 
 		mPlayer.playTwo("Tetris_DX.ogg");
 	hardDropping = false;
 	return lineMoved;
 }
 
-void Game::gameOver(MapEx::GameOver &end)
+void Game::gameOverSequence(MapEx::GameOver &end)
 {
+	//Remove save file if it exists
 	map.removeSaveFile(playerName);
+
+	//Compute Scoreboard
 	ScoreBoard board;
 	board.deserializeFrom(scoreboardFileName);
 	board.newPlayerScore(score, playerName);
 	board.serializeTo(scoreboardFileName);
+
+	//Draw Scoreboard and end Game
 	end.display(*window, drawer, board);
 	gameState = GameState::GameOver;
 	mPlayer.playThree("Tetris_Jingle.ogg");

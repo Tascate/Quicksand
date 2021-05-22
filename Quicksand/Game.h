@@ -9,8 +9,6 @@
 #include <string>
 #include <iostream>
 
-using namespace sf;
-
 class Game {
 private:
 	enum class GameState {
@@ -38,7 +36,7 @@ private:
 	float windowHeight = (SQUARE_SIZE + SQUARE_OFFSET) * MAP_HEIGHT + SQUARE_OFFSET;
 
 	bool selfGenerate = true;
-	RenderWindow* window = nullptr;
+	sf::RenderWindow* window = nullptr;
 
 	//MAP Setting
 	GameMap map = GameMap(MAP_HEIGHT, MAP_WIDTH);
@@ -50,7 +48,7 @@ private:
 	const float DEFAULT_DAS_TIMER = 0.2f;
 	const float DEFAULT_AS_TIMER = 0.05f;
 	int dx = 0;
-	Clock clock;
+	sf::Clock clock;
 	bool hardDropping = false, isFastFalling = false, delayingAutoShift = false, isAutoShifting = false;
 	unsigned int currentJoystickID = 0;
 	const float DEFAULT_DEADZONE = 15;
@@ -68,17 +66,17 @@ private:
 	Button q, c, r;
 	// helper
 	void gameLoop();
-	void gameOver(MapEx::GameOver &end);
+	void gameOverSequence(MapEx::GameOver &end);
 	void advanceGameState();
-	void checkForKeyInput();
-	void checkForReleaseKeyInput();
-	void checkForJoyInput();
-	void checkForJoyMove();
+	void checkForKeyInput(sf::Keyboard::Key);
+	void checkForReleaseKeyInput(sf::Keyboard::Key);
+	void checkForJoyButtonInput(unsigned int, unsigned int);
+	void checkForJoyAxisMove(unsigned int, sf::Joystick::Axis, float);
 	void checkForHeldInput();
 	int hardDrop();
 public:
 	Game();
-	Game(RenderWindow& w);
+	Game(sf::RenderWindow& w);
 	~Game();
 	void playGame();
 	int getScore() const{return score;}

@@ -42,6 +42,14 @@ public:
             blockArea[i].col = origin.col + temp;
         }
     }
+    virtual void rotateCCW() {
+        int temp;
+        for (int i = 0; i < numberOfBlocks; i++) {
+            temp = origin.row - blockArea[i].row;
+            blockArea[i].row = origin.row + (origin.col - blockArea[i].col);
+            blockArea[i].col = origin.col - temp;
+        }
+    }
     virtual void shift(int rowU, int colU) {
         for (int i = 0; i < numberOfBlocks; i++) {
             blockArea[i].row += rowU;
