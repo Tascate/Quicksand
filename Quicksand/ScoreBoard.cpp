@@ -45,7 +45,6 @@ bool ScoreBoard::deserializeFrom(string fileName)
     }
     fin.close();
     ptr = board.end(); // signifies score is not on leaderboard
-    newPlayerScore(0, playerName);
     return true;
 }
 
