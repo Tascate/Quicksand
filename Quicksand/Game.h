@@ -3,7 +3,7 @@
 #include "GameMap.h"
 #include "Debug.h"
 #include "GameGraphics.h"
-#include "MusicPlayer.h"
+#include "AudioPlayer.h"
 #include "TextBox.h"
 #include "Button.h"
 #include <string>
@@ -59,7 +59,7 @@ private:
 	
 
 	//MUSIC Objects
-	MusicPlayer mPlayer;
+	AudioPlayer mPlayer;
 
 	// graphics
 	GameGraphics drawer;
