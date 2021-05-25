@@ -18,6 +18,39 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Bomb.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="CustomExceptions.h" />
+    <ClInclude Include="Debug.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameGraphics.h" />
+    <ClInclude Include="GameMap.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="AudioPlayer.h" />
+    <ClInclude Include="RandomBlock.h" />
+    <ClInclude Include="ScoreBoard.h" />
+    <ClInclude Include="Square.h" />
+    <ClInclude Include="TetrisBlock.h" />
+    <ClInclude Include="TetrisGame.h" />
+    <ClInclude Include="TextBox.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameGraphics.cpp" />
+    <ClCompile Include="GameMap.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="AudioPlayer.cpp" />
+    <ClCompile Include="RandomBlock.cpp" />
+    <ClCompile Include="ScoreBoard.cpp" />
+    <ClCompile Include="Square.cpp" />
+    <ClCompile Include="TetrisBlock.cpp" />
+    <ClCompile Include="TextBox.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -89,13 +122,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Troy\Documents\School\SFML\include;C:\Users\Troy\Documents\School\CIS 29\GameProject\Quicksand\Quicksand\MusicPlayer\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>SFML\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Troy\Documents\School\SFML\lib;C:\Users\Troy\Documents\School\CIS 29\GameProject\Quicksand\Quicksand\MusicPlayer\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-audio-d.lib;sfml-network-d.lib;sfml-window-d.lib;MusicPlayer_Debug64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-audio-d.lib;sfml-network-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -106,15 +139,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Troy\Documents\School\SFML\include;C:\Users\Troy\Documents\School\CIS 29\GameProject\Quicksand\Quicksand\MusicPlayer\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>SFML\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Troy\Documents\School\SFML\lib;C:\Users\Troy\Documents\School\CIS 29\GameProject\Quicksand\Quicksand\MusicPlayer\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system.lib;sfml-graphics.lib;sfml-audio.lib;sfml-network.lib;sfml-window.lib;MusicPlayer_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Troy\Documents\School\CIS 29\GameProject\Quicksand\Quicksand\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system.lib;sfml-graphics.lib;sfml-audio.lib;sfml-network.lib;sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -123,13 +156,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Troy\Documents\School\SFML\include;C:\Users\Troy\Documents\School\CIS 29\GameProject\Quicksand\Quicksand\MusicPlayer\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>SFML\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Troy\Documents\School\SFML\lib;C:\Users\Troy\Documents\School\CIS 29\GameProject\Quicksand\Quicksand\MusicPlayer\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-audio-d.lib;sfml-network-d.lib;sfml-window-d.lib;MusicPlayer_Debug64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-audio-d.lib;sfml-network-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,46 +173,17 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Troy\Documents\School\SFML\include;C:\Users\Troy\Documents\School\CIS 29\GameProject\Quicksand\Quicksand\MusicPlayer\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>SFML\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Troy\Documents\School\SFML\lib;C:\Users\Troy\Documents\School\CIS 29\GameProject\Quicksand\Quicksand\MusicPlayer\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system.lib;sfml-graphics.lib;sfml-audio.lib;sfml-network.lib;sfml-window.lib;MusicPlayer_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Troy\Documents\School\CIS 29\GameProject\Quicksand\Quicksand\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system.lib;sfml-graphics.lib;sfml-audio.lib;sfml-network.lib;sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Bomb.cpp" />
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Debug.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameGraphics.cpp" />
-    <ClCompile Include="GameMap.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="RandomBlock.cpp" />
-    <ClCompile Include="ScoreBoard.cpp" />
-    <ClCompile Include="Square.cpp" />
-    <ClCompile Include="TetrisBlock.cpp" />
-    <ClCompile Include="TextBox.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Bomb.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="CustomExceptions.h" />
-    <ClInclude Include="Debug.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GameGraphics.h" />
-    <ClInclude Include="GameMap.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="RandomBlock.h" />
-    <ClInclude Include="ScoreBoard.h" />
-    <ClInclude Include="Square.h" />
-    <ClInclude Include="TetrisBlock.h" />
-    <ClInclude Include="TextBox.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
